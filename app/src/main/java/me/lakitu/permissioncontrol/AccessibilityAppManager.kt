@@ -1,13 +1,12 @@
 package me.lakitu.permissioncontrol
 
-import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.provider.Settings
 
-class AccessibilityAppManager(private val context: Context) {
+class AccessibilityAppManager(context: Context) {
 
     private val contentResolver: ContentResolver = context.contentResolver
     private val pm: PackageManager = context.packageManager
@@ -57,18 +56,13 @@ class AccessibilityAppManager(private val context: Context) {
                     packageName = packageName,
                     appName = pm.getApplicationLabel(appInfo).toString(),
                     serviceName = services.first(),
-                    icon = try { pm.getApplicationIcon(packageName) } catch (e: Exception) { null },
+                    icon = try { pm.getApplicationIcon(packageName) } catch (_: Exception) { null },
                     isAccessibilityEnabled = isEnabled
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 null
             }
         }.sortedBy { it.appName }
-    }
-
-    fun isAppAccessibilityEnabled(packageName: String): Boolean {
-        val enabledServices = getEnabledServicesSet()
-        return enabledServices.any { it.startsWith(packageName) }
     }
 
     fun setAppAccessibilityEnabled(packageName: String, enable: Boolean): Boolean {
@@ -108,8 +102,7 @@ class AccessibilityAppManager(private val context: Context) {
             )
 
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (_: Exception) {
             false
         }
     }

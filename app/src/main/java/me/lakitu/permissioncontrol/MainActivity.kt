@@ -1,9 +1,6 @@
 package me.lakitu.permissioncontrol
 
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
             binding.statusBarView.layoutParams.height = statusBarHeight
             binding.statusBarView.requestLayout()
@@ -151,13 +148,13 @@ class MainActivity : AppCompatActivity() {
     private fun updatePermissionStatus() {
         val secureSettings = hasWriteSecureSettings()
 
-        updateStatus(binding.tvSecureSettingsStatus, binding.btnSecureSettings, secureSettings)
+        updateStatus(binding.tvSecureSettingsStatus, secureSettings)
 
         binding.btnSystemSettings.isEnabled = secureSettings
         binding.btnAppAccessibility.isEnabled = secureSettings
     }
 
-    private fun updateStatus(textView: TextView, button: Button, enabled: Boolean) {
+    private fun updateStatus(textView: TextView, enabled: Boolean) {
         textView.text = if (enabled) "已授予" else "未授予"
         textView.setTextColor(getColor(if (enabled) R.color.permission_granted else R.color.permission_denied))
     }
