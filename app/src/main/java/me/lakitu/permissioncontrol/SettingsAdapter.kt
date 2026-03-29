@@ -28,6 +28,7 @@ class SettingsAdapter(
         val setting = settings[position]
         holder.name.text = setting.name
         holder.key.text = setting.key
+        holder.switch.setOnCheckedChangeListener(null)
         holder.switch.isChecked = setting.getValue() as Boolean
 
         holder.switch.setOnCheckedChangeListener { _, isChecked ->

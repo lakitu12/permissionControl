@@ -31,6 +31,7 @@ class AppsAdapter(
         holder.name.text = app.appName
         holder.packageName.text = app.packageName
         holder.icon.setImageDrawable(app.icon)
+        holder.switch.setOnCheckedChangeListener(null)
         holder.switch.isChecked = app.isAccessibilityEnabled
 
         holder.switch.setOnCheckedChangeListener { _, isChecked ->
