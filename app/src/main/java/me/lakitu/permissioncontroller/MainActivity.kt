@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     @Suppress("NotifyDataSetChanged")
     private val refreshRunnable = object : Runnable {
         override fun run() {
+            updatePermissionStatus()
             settingsAdapter?.notifyDataSetChanged()
             appsAdapter?.notifyDataSetChanged()
             refreshHandler.postDelayed(this, 500)
@@ -56,7 +57,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updatePermissionStatus()
-        refreshHandler.post(refreshRunnable)
+        if (!hasWriteSecureSettings()) {
+            refreshHandler.post(refreshRunnable)
+        }
     }
 
     override fun onPause() {
