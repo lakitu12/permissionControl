@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     private var settingsAdapter: SettingsAdapter? = null
     private var appsAdapter: AppsAdapter? = null
+    private var permissionDialog: AlertDialog? = null
+    private var wasPermissionDenied = true
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     @Suppress("NotifyDataSetChanged")
@@ -119,7 +121,8 @@ class MainActivity : AppCompatActivity() {
         tvMessage.text = message
         tvMessage.setTextIsSelectable(true)
 
-        AlertDialog.Builder(this)
+        wasPermissionDenied = true
+        permissionDialog = AlertDialog.Builder(this)
             .setTitle(R.string.permission_required)
             .setView(dialogView)
             .setPositiveButton(R.string.ok, null)
@@ -199,6 +202,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSystemSettings.isEnabled = secureSettings
         binding.btnAppAccessibility.isEnabled = secureSettings
+
+        if (secureSettings && wasPermissionDenied) {
+            wasPermissionDenied = false
+            permissionDialog?.dismiss()
+            permissionDialog = null
+        }
     }
 
     private fun updateStatus(textView: TextView, enabled: Boolean) {
